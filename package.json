@@ -1,0 +1,40 @@
+{
+  "name": "coyote-fast-break",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Coyote's Fast Break: a lane runner built with React, TypeScript, and an HTML canvas renderer.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "node e2e/run.mjs",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run test:e2e",
+    "assets": "python3 scripts/prepare-assets.py"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@types/node": "^22.19.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.1.0",
+    "eslint": "^9.39.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "globals": "^16.0.0",
+    "playwright": "^1.63.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.50.0",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.0"
+  }
+}

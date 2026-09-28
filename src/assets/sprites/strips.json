@@ -1,0 +1,14 @@
+{
+  "run": {
+    "frames": 8,
+    "width": 326,
+    "height": 489,
+    "groundMargin": 8
+  },
+  "slide": {
+    "frames": 6,
+    "width": 464,
+    "height": 491,
+    "groundMargin": 8
+  }
+}

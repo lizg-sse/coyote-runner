@@ -1,0 +1,304 @@
+/*
+ * All HUD dimensions are expressed in "logical pixels" through --u, the
+ * scale from the 430x780 logical canvas to CSS pixels. The React shell sets
+ * --u whenever it resizes, so the HUD and the canvas always scale together.
+ */
+:root {
+  --cfb-gold: #ffbd16;
+  --cfb-ink: #08111d;
+  --cfb-sky: #58bdf7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  background: #07101a;
+  overscroll-behavior: none;
+}
+
+.cfb-root {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background: radial-gradient(circle at 50% 0, #173b5f, #07101a 58%, #02060a);
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cfb-shell {
+  --u: 1;
+  --px: calc(var(--u) * 1px);
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(24 * var(--px));
+  background: #0a1621;
+  box-shadow: 0 30px 100px #000b;
+  touch-action: none;
+}
+
+.cfb-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* HUD ------------------------------------------------------------------ */
+
+.cfb-hud {
+  position: absolute;
+  inset: calc(12 * var(--px)) calc(12 * var(--px)) auto;
+  display: grid;
+  grid-template-columns: 1fr 1.7fr 1fr;
+  gap: calc(8 * var(--px));
+  align-items: start;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.cfb-hud-box {
+  background: linear-gradient(#172c43dd, #08111ddd);
+  border: calc(2 * var(--px)) solid #6ca0c9;
+  border-radius: calc(14 * var(--px));
+  padding: calc(8 * var(--px)) calc(6 * var(--px));
+  text-align: center;
+  font-weight: 900;
+  box-shadow: 0 calc(4 * var(--px)) calc(12 * var(--px)) #0008;
+  min-width: 0;
+}
+
+.cfb-hud-box small {
+  display: block;
+  font-size: calc(9 * var(--px));
+  letter-spacing: calc(1.2 * var(--px));
+  color: #cfe9ff;
+  white-space: nowrap;
+}
+
+.cfb-hud-box b {
+  display: block;
+  font-size: calc(20 * var(--px));
+  margin-top: calc(1 * var(--px));
+  white-space: nowrap;
+}
+
+.cfb-foul-bits {
+  display: flex;
+  justify-content: center;
+  gap: calc(5 * var(--px));
+  margin-top: calc(4 * var(--px));
+}
+
+.cfb-foul-dot {
+  width: calc(19 * var(--px));
+  height: calc(5 * var(--px));
+  border-radius: 99px;
+  background: #263d50;
+  border: 1px solid #6f8ca4;
+}
+
+.cfb-foul-dot.is-on {
+  background: linear-gradient(90deg, #ffd044, #ff4a20);
+  border-color: #ffd37a;
+  box-shadow: 0 0 calc(7 * var(--px)) #ff5a2c;
+}
+
+.cfb-heat {
+  background: #07111cdd;
+  border: calc(2 * var(--px)) solid #4c6e89;
+  border-radius: calc(14 * var(--px));
+  padding: calc(7 * var(--px)) calc(10 * var(--px));
+  min-width: 0;
+}
+
+.cfb-heat-label {
+  text-align: center;
+  font-size: calc(10 * var(--px));
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: calc(1 * var(--px));
+  color: #ffd21d;
+  margin-bottom: calc(5 * var(--px));
+  white-space: nowrap;
+}
+
+.cfb-heat.is-hot .cfb-heat-label {
+  font-size: calc(12 * var(--px));
+  text-shadow: 0 0 calc(10 * var(--px)) #ff7b13;
+}
+
+.cfb-bits {
+  display: flex;
+  gap: calc(4 * var(--px));
+}
+
+.cfb-bit {
+  height: calc(9 * var(--px));
+  flex: 1;
+  border-radius: 99px;
+  background: #23384a;
+  border: 1px solid #6386a0;
+}
+
+.cfb-bit.is-on {
+  background: linear-gradient(90deg, #ffe241, #ff8219);
+  box-shadow: 0 0 calc(9 * var(--px)) #ff7b13;
+}
+
+.cfb-message {
+  position: absolute;
+  z-index: 20;
+  left: 50%;
+  top: calc(150 * var(--px));
+  transform: translateX(-50%) scale(0.9);
+  font-size: calc(26 * var(--px));
+  font-weight: 900;
+  font-style: italic;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 calc(4 * var(--px)) 0 #05101c, 0 0 calc(16 * var(--px)) #fff;
+  opacity: 0;
+  transition: opacity 120ms ease, transform 120ms ease;
+  pointer-events: none;
+}
+
+.cfb-message.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* Overlays -------------------------------------------------------------- */
+
+.cfb-overlay {
+  position: absolute;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: calc(26 * var(--px));
+  background: linear-gradient(#071321dd, #06101bf2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: calc(14 * var(--px));
+}
+
+.cfb-logo {
+  font-size: calc(55 * var(--px));
+  line-height: 0.82;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: calc(-4 * var(--px));
+  transform: skew(-5deg);
+  text-shadow: 0 calc(6 * var(--px)) 0 #000, 0 0 calc(18 * var(--px)) #3a8dcc;
+  margin: 0 0 calc(12 * var(--px));
+}
+
+.cfb-hero {
+  width: calc(150 * var(--px));
+  height: calc(186 * var(--px));
+  object-fit: contain;
+  filter: drop-shadow(0 calc(13 * var(--px)) calc(10 * var(--px)) #0009);
+  animation: cfb-bob 0.75s ease-in-out infinite alternate;
+  margin-bottom: calc(12 * var(--px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cfb-hero {
+    animation: none;
+  }
+}
+
+.cfb-eyebrow {
+  font-size: calc(11 * var(--px));
+  font-weight: 900;
+  letter-spacing: calc(3 * var(--px));
+  color: #ffd41c;
+  margin-bottom: calc(8 * var(--px));
+}
+
+.cfb-play {
+  border: 0;
+  border-radius: 99px;
+  background: linear-gradient(#ffe343, #ffad18);
+  color: #07111c;
+  font-weight: 900;
+  font-size: calc(19 * var(--px));
+  padding: calc(15 * var(--px)) calc(36 * var(--px));
+  min-width: calc(200 * var(--px));
+  box-shadow: 0 calc(7 * var(--px)) 0 #b85c07, 0 calc(12 * var(--px)) calc(25 * var(--px)) #0009;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.cfb-play:active {
+  transform: translateY(calc(3 * var(--px)));
+  box-shadow: 0 calc(4 * var(--px)) 0 #b85c07;
+}
+
+.cfb-play:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.cfb-legend {
+  font-size: calc(11 * var(--px));
+  line-height: 1.65;
+  margin-top: calc(18 * var(--px));
+  background: #0c1b2b;
+  border: 1px solid #4e6e89;
+  border-radius: calc(15 * var(--px));
+  padding: calc(12 * var(--px)) calc(15 * var(--px));
+  max-width: calc(330 * var(--px));
+}
+
+.cfb-legend strong {
+  color: #ffcf22;
+}
+
+.cfb-error {
+  color: #ffb4a8;
+  border-color: #b85c4a;
+}
+
+.cfb-final-score {
+  font-size: calc(56 * var(--px));
+  font-weight: 900;
+  margin: calc(8 * var(--px)) 0;
+  color: #ffd42b;
+  text-shadow: 0 calc(4 * var(--px)) #000;
+}
+
+.cfb-stats {
+  font-weight: 900;
+  line-height: 1.8;
+  margin-bottom: calc(20 * var(--px));
+  background: #0c1b2b;
+  border: 1px solid #46647e;
+  border-radius: calc(14 * var(--px));
+  padding: calc(11 * var(--px)) calc(18 * var(--px));
+  min-width: calc(250 * var(--px));
+}
+
+@keyframes cfb-bob {
+  from {
+    transform: translateY(0) rotate(-2deg);
+  }
+  to {
+    transform: translateY(calc(-8 * var(--px))) rotate(2deg);
+  }
+}
