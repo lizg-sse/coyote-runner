@@ -17,7 +17,7 @@
     "test:e2e": "node e2e/run.mjs",
     "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run test:e2e",
     "assets": "python3 scripts/prepare-assets.py",
-    "homepage": "https://Spurs-StrategyAndAnalytics.github.io/coyote-runner",
+    "homepage": "https://lizg-sse.github.io/coyote-runner",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
